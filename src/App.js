@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getCookie } from './utils';
+import Messages from './Messages'
 // import logo from './logo.svg';
 import './App.css';
 
@@ -13,10 +14,12 @@ class App extends Component {
       loading: false,
       username: usernameCookie || "",
       name: "",
-      seatNumber: ""
+      seatNumber: "",
+      room: ""
     }
     this.updateInput = this.updateInput.bind(this)
     this.setCookie = this.setCookie.bind(this)
+    this.setRoom = this.setRoom.bind(this)
   }
 
   setCookie(event) {
@@ -35,24 +38,40 @@ class App extends Component {
     const value = target.value
     console.log("Key: ", key)
     console.log("Value: ", value)
-
+  
     this.setState({[key]: value});
   }
 
+  setRoom(room) {
+    console.log("Setting room to: ", room)
+    this.setState({
+      room: room
+    })
+  }
+
   render() {
-    const { username } = this.state;
+    const { username, room } = this.state;
 
     return (
       <div className="App">
         <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <p>
             Greetings from the concierge
           </p>
         </header>
           { username ?
             <div>
-              Welcome
+             
+                            <div>
+                            <Messages room={room} />
+                          </div>
+              
+
+              <div>
+                <button onClick={() => {this.setRoom("global")}}> Global </button>
+                <button onClick={() => {this.setRoom("conductor")}} > Conductor </button>
+                <button onClick={() => {this.setRoom("trolleyService")}}> Trolley Service </button>
+              </div>
             </div>
           :
             <div>
