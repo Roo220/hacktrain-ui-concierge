@@ -5,10 +5,19 @@ class Messages extends Component {
     super(props)
     this.state = {
       room: props.room || "",
-      messages: []
+      messages: [],
+      messageBox: "" 
     }
 
     this.getMessages = this.getMessages.bind(this)
+    this.sendMessage = this.sendMessage.bind(this) 
+    this.updateInput = this.updateInput.bind(this) 
+  }
+
+  sendMessage(event) {
+    console.log(this.state.messageBox); 
+    console.log(this.props.room+"asfasfsaf"); 
+    event.preventDefault(); 
   }
 
   getMessages(room) {
@@ -31,13 +40,20 @@ class Messages extends Component {
     []
   }
 
+  updateInput(event) {
+    const target = event.target;
+    const key = target.name
+    const value = target.value
+
+    this.setState({[key]: value});
+  }
+
   componentDidMount(){
     this.setState({messages: this.getMessages(this.state.room)});
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
-    console.log("prev props: ", prevProps)
     if (this.props.room !== prevProps.room) {
       this.setState({
         messages: this.getMessages(this.props.room)
@@ -57,6 +73,10 @@ class Messages extends Component {
           </div>
         ))
         }
+        <form name="object" onSubmit={this.sendMessage}>
+          <input type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
+          <input type="submit" value="Send!" /> 
+        </form>
       </div>
     )
   }
