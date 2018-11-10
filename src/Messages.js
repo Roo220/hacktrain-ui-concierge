@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {getCookie} from './utils'; 
 
 class Messages extends Component {
   constructor(props){
@@ -15,9 +16,18 @@ class Messages extends Component {
   }
 
   sendMessage(event) {
-    console.log(this.state.messageBox); 
-    console.log(this.props.room+"asfasfsaf"); 
     event.preventDefault(); 
+
+    const payload = {
+      datetime: Date.now(),
+      room: this.props.room,
+      username: getCookie("conciergeUsername"),
+      message: this.state.messageBox 
+    }
+
+    this.setState({messageBox: ""});
+
+    console.log(payload); 
   }
 
   getMessages(room) {
@@ -66,8 +76,8 @@ class Messages extends Component {
     return (
       <div>
         <h4>{ room }</h4>
-        { messages.map(it => (
-          <div>
+        { messages.map((it, index) => (
+          <div key={index}>
             <span>{ it.user } - </span>
             <span>{ it.message }</span>
           </div>

@@ -15,7 +15,7 @@ class App extends Component {
       username: usernameCookie || "",
       name: "",
       seatNumber: "",
-      room: ""
+      room: "global"
     }
     this.updateInput = this.updateInput.bind(this)
     this.setCookie = this.setCookie.bind(this)
@@ -61,11 +61,9 @@ class App extends Component {
         </header>
           { username ?
             <div>
-             
-                            <div>
-                            <Messages room={room} />
-                          </div>
-              
+              <div>
+                <Messages room={room} />
+              </div>      
 
               <div>
                 <button onClick={() => {this.setRoom("global")}}> Global </button>
