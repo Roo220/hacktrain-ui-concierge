@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   render() {
-    const { username, name, seatNumber } = this.state;
+    const { username } = this.state;
 
     return (
       <div className="App">
