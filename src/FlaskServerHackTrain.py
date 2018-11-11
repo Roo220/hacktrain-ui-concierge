@@ -41,19 +41,19 @@ ARRIVAL_INPUTS = ("arrival", "arrivals", "arrive")
 ARRIVAL_REPONSE = "This train is due to arrive at London St Pancras station at 10:05"
 
 def greeting(sentence):
+    for word in sentence.split():
+        print(word)
 
-   for word in sentence.split():
+    for word in sentence.split():
         if word.lower() in WEATHER_INPUTS:
-           return random.choice(WEATHER_RESPONSE)
+           return WEATHER_RESPONSE
         elif word.lower() in DELAY_INPUTS:
            return DELAY_RESPONSE
         elif word.lower() in ARRIVAL_INPUTS:
             return ARRIVAL_REPONSE
-        if word.lower() in SPORTS_INPUTS:
+        elif word.lower() in SPORTS_INPUTS:
            return random.choice(SPORTS_RESPONSES)
-        else:
-            return ""
-
+    
 messages = []
 
 
@@ -68,7 +68,8 @@ def sendMessage():
 
     if(data["room"] == "conductor"):
         botResponse = greeting(m.message)
-        if (botResponse != ""):
+        print(botResponse)
+        if (botResponse is not None):
             botMessage = Message("conductor", "", "conductor", botResponse, data["user"])
             messages.append(botMessage)
         
@@ -94,6 +95,7 @@ def getMessages():
         status=200,
         mimetype='application/json'
     )
+
 
     return response
 
