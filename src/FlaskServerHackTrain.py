@@ -31,24 +31,29 @@ class Message(object):
 SPORTS_INPUTS = ("sport", "football", "sports", "scoccer")
 SPORTS_RESPONSES = ["Welbeck blow for Gunners", "Midfield duo must step up for Reds, says Molby", "Fatigued foxes united in spirit","Football: Lions skipper Hariss Harun leads by example with Man-of-the-Match display"]
 
-WEATHER_INPUTS = ("london", "weather", "raining")
-WEATHER_RESPONSES=["13 C with Occasional Rain"]
+WEATHER_INPUTS = ("weather", "raining", "temperature", )
+WEATHER_RESPONSE="Todays weather is 13 C with occasional rain"
 
 DELAY_INPUTS = ("late", "delay", "waiting")
-DELAY_RESPONSES=["We are experiencing signaling issue trains will be running 15 minute delayed"]
+DELAY_RESPONSE="We are currently experiencing signaling issues, trains will be running 15 minute delayed"
+
+ARRIVAL_INPUTS = ("arrival", "arrivals", "arrive")
+ARRIVAL_REPONSE = "This train is due to arrive at London St Pancras station at 10:05"
 
 def greeting(sentence):
+    for word in sentence.split():
+        print(word)
 
-   for word in sentence.split():
-        if word.lower() in SPORTS_INPUTS:
-           return random.choice(SPORTS_RESPONSES)
-        elif word.lower() in WEATHER_INPUTS:
-           return random.choice(WEATHER_RESPONSES)
+    for word in sentence.split():
+        if word.lower() in WEATHER_INPUTS:
+           return WEATHER_RESPONSE
         elif word.lower() in DELAY_INPUTS:
-           return random.choice(DELAY_RESPONSES)
-        else:
-            return ""
-
+           return DELAY_RESPONSE
+        elif word.lower() in ARRIVAL_INPUTS:
+            return ARRIVAL_REPONSE
+        elif word.lower() in SPORTS_INPUTS:
+           return random.choice(SPORTS_RESPONSES)
+    
 messages = []
 
 
@@ -59,19 +64,18 @@ def sendMessage():
     data = request.data
     data = json.loads(data)
     m = Message(data["room"], data["dateTime"], data["user"], data["message"], "")
-    print(m.message)
     messages.append(m)
 
     if(data["room"] == "conductor"):
         botResponse = greeting(m.message)
-        if (botResponse != ""):
+        print(botResponse)
+        if (botResponse is not None):
             botMessage = Message("conductor", "", "conductor", botResponse, data["user"])
             messages.append(botMessage)
         
     
     payload = m2=[message.serialize() for message in messages]
     payload = json.dumps(payload)
-    print(payload)
 
     response = app.response_class(
         response=payload,
@@ -85,13 +89,13 @@ def sendMessage():
 def getMessages():
     payload = m2=[message.serialize() for message in messages]
     payload = json.dumps(payload)
-    print(payload)
 
     response = app.response_class(
         response=payload,
         status=200,
         mimetype='application/json'
     )
+
 
     return response
 

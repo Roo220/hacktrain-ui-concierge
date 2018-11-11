@@ -43,7 +43,7 @@ class Messages extends Component {
     .then(res => res.json())
     .then((result) => {
         console.log(result)
-        const messages = result.filter(it => (it.room === this.state.room))
+        const messages = this.filterMessages(result, this.state.room,  getCookie("conciergeUsername"))
         this.setState({messages: messages})
         this.setState({messageBox: ""})
       })
@@ -56,9 +56,18 @@ class Messages extends Component {
     .then(result => {
       console.log(result.filter(it => (it.room === room)))
       this.setState({
-        messages: result.filter(it => (it.room === room))
+        messages: this.filterMessages(result, room, getCookie("conciergeUsername"))
       })
     });
+  }
+
+  filterMessages(messages, room, user) {
+    const messagesByRoom = messages.filter(it => it.room === room);
+
+    if(room !== "global") {
+      return messagesByRoom.filter(it => (it.user === user || it.user === "conductor"))
+    }
+    return messagesByRoom;
   }
 
   updateInput(event) {
