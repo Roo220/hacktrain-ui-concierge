@@ -3,6 +3,13 @@ import { getCookie } from './utils';
 import Messages from './Messages'
 // import logo from './logo.svg';
 import './App.css';
+import './css/style.css';
+
+// Import icons
+import globalIcon from './icon/web.svg'; 
+import conductorIcon from './icon/user.svg'; 
+import carriageIcon from './icon/user-group.svg'; 
+import cartIcon from './icon/cart.svg'; 
 
 class App extends Component {
   constructor(props) {
@@ -66,9 +73,11 @@ class App extends Component {
               </div>      
 
               <div>
-                <button onClick={() => {this.setRoom("global")}}> Global </button>
-                <button onClick={() => {this.setRoom("conductor")}} > Conductor </button>
-                <button onClick={() => {this.setRoom("trolleyService")}}> Trolley Service </button>
+                <button className="mainButton" onClick={() => {this.setRoom("global")}}> <img src={globalIcon} /> <br /> Global </button>
+                <button className="mainButton" onClick={() => {this.setRoom("conductor")}} > <img src={conductorIcon} /> <br /> Conductor </button>
+                <br /> 
+                <button className="mainButton" onClick={() => {this.setRoom("carriage")}}> <img src={carriageIcon} /> <br /> Carriage </button>
+                <button className="mainButton" onClick={() => {this.setRoom("trolleyService")}}> <img src={cartIcon} /> <br /> TrolleyService </button>
               </div>
             </div>
           :

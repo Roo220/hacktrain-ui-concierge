@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getCookie} from './utils'; 
+import arrowIcon from "./icon/arrow-thin-right.svg";
 
 class Messages extends Component {
   constructor(props){
@@ -85,7 +86,7 @@ class Messages extends Component {
         }
         <form name="object" onSubmit={this.sendMessage}>
           <input type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
-          <input type="submit" value="Send!" /> 
+          <button className="sendButton" type="submit"> <img src={arrowIcon} /> </button> 
         </form>
       </div>
     )
