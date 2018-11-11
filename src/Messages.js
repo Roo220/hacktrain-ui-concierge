@@ -59,14 +59,7 @@ class Messages extends Component {
       return result.filter(it => (it.room === room))
     });
 
-    return [
-      {
-        user: "seb",
-        datetime: "",
-        message: "yes good",
-        "room": "global"
-      }
-    ]
+    return []
   }
 
   updateInput(event) {
