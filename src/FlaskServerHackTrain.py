@@ -1,9 +1,8 @@
 from flask import Flask
 from flask import request
-from flask import jsonify
-import pandas as pd
-import numpy as np
 import json
+import string
+import random
 
 
 class Message(object):
@@ -29,29 +28,26 @@ class Message(object):
         }
 
 
-def df_empty(columns, dtypes, index=None):
-    assert len(columns) == len(dtypes)
-    df = pd.DataFrame(index=index)
-    for c, d in zip(columns, dtypes):
-         df[c] = pd.Series(dtype=d)
-    return df
-
-
-df = df_empty(['room', 'dateTime', 'username', 'message','to'], dtypes=[object, object, object, object,object])
-
 SPORTS_INPUTS = ("sport", "football", "sports", "scoccer")
 SPORTS_RESPONSES = ["Welbeck blow for Gunners", "Midfield duo must step up for Reds, says Molby", "Fatigued foxes united in spirit","Football: Lions skipper Hariss Harun leads by example with Man-of-the-Match display"]
 
 WEATHER_INPUTS = ("london", "weather", "raining")
-WEATHER_RESPONSES=("13 C with Occasional Rain")
+WEATHER_RESPONSES=["13 C with Occasional Rain"]
+
+DELAY_INPUTS = ("late", "delay", "waiting")
+DELAY_RESPONSES=["We are experiencing signaling issue trains will be running 15 minute delayed"]
 
 def greeting(sentence):
 
    for word in sentence.split():
-       if word.lower() in SPORTS_INPUTS:
+        if word.lower() in SPORTS_INPUTS:
            return random.choice(SPORTS_RESPONSES)
-       elif word.lower() in WEATHER_INPUTS:
+        elif word.lower() in WEATHER_INPUTS:
            return random.choice(WEATHER_RESPONSES)
+        elif word.lower() in DELAY_INPUTS:
+           return random.choice(DELAY_RESPONSES)
+        else:
+            return ""
 
 messages = []
 
@@ -60,12 +56,19 @@ app = Flask(__name__)
 
 @app.route('/sendMessage', methods=['POST'])
 def sendMessage():
-    global df
     data = request.data
     data = json.loads(data)
     m = Message(data["room"], data["dateTime"], data["user"], data["message"], "")
     print(m.message)
     messages.append(m)
+
+    if(data["room"] == "conductor"):
+        botResponse = greeting(m.message)
+        if (botResponse != ""):
+            botMessage = Message("conductor", "", "conductor", botResponse, data["user"])
+            messages.append(botMessage)
+        
+    
     payload = m2=[message.serialize() for message in messages]
     payload = json.dumps(payload)
     print(payload)
