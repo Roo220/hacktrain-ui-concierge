@@ -39,7 +39,7 @@ class Messages extends Component {
       }
     }
     console.log(settings)
-    fetch("http://5fa75f3a.ngrok.io/sendMessage", settings)
+    fetch("http://localhost:5000/sendMessage", settings)
     .then(res => res.json())
     .then((result) => {
         console.log(result)
@@ -51,7 +51,7 @@ class Messages extends Component {
 
   getMessages(room) {
     console.log("Retrieving messages")
-    fetch("http://5fa75f3a.ngrok.io/getMessages")
+    fetch("http://localhost:5000/getMessages")
     .then(res => res.json())
     .then(result => {
       console.log(result.filter(it => (it.room === room)))
