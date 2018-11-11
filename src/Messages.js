@@ -10,13 +10,13 @@ class Messages extends Component {
     super(props)
     this.state = {
       room: props.room || "",
-      messages: [],
-      messageBox: "" 
+      messageBox: "",
+      messages: []
     }
 
     this.getMessages = this.getMessages.bind(this)
-    this.sendMessage = this.sendMessage.bind(this) 
-    this.updateInput = this.updateInput.bind(this) 
+    this.sendMessage = this.sendMessage.bind(this)
+    this.updateInput = this.updateInput.bind(this)
   }
 
   sendMessage(event) {
@@ -43,8 +43,7 @@ class Messages extends Component {
     .then(res => res.json())
     .then((result) => {
         console.log(result)
-        const messages = []
-        result.map(it => messages.push(it))
+        const messages = result.filter(it => (it.room === this.state.room))
         this.setState({messages: messages})
         this.setState({messageBox: ""})
       })
@@ -56,10 +55,10 @@ class Messages extends Component {
     .then(res => res.json())
     .then(result => {
       console.log(result.filter(it => (it.room === room)))
-      return result.filter(it => (it.room === room))
+      this.setState({
+        messages: result.filter(it => (it.room === room))
+      })
     });
-
-    return []
   }
 
   updateInput(event) {
@@ -71,25 +70,28 @@ class Messages extends Component {
   }
 
   componentDidMount(){
-    this.setState({messages: this.getMessages(this.state.room)});
+    this.getMessages(this.state.room);
   }
 
   componentDidUpdate(prevProps) {
     // Typical usage (don't forget to compare props):
     if (this.props.room !== prevProps.room) {
-      this.setState({
-        messages: this.getMessages(this.props.room)
-      })
+      this.getMessages(this.props.room)
     }  
   }
 
   render(){
-    const { messages, room } = this.state;
+    const { room, messages } = this.state;
+    
+
     return (
       <div>
         <button className="returnButton" onClick={() => {window.location.reload();}}> <img src={returnIcon} /> <br /> </button> 
         <div className="displayAllMessages">
           <h3 className="roomTitle">{ room } room </h3>
+          { messages.length < 1 %
+            <div> Loading... </div>
+          }
           { messages.map((it, index) => (
             <div key={index}>
               <span className="displayName">    { it.user }</span>: 
