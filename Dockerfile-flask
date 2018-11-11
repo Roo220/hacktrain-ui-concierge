@@ -1,0 +1,12 @@
+FROM arm32v6/alpine:3.7
+
+RUN apk update
+RUN apk add --update python py-pip python-dev
+RUN pip install flask
+
+WORKDIR /usr
+COPY ./src/FlaskServerHackTrain.py /usr
+
+EXPOSE 5000
+
+CMD FLASK_APP=./src/FlaskServerHackTrain && flask run
