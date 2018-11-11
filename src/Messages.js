@@ -39,7 +39,7 @@ class Messages extends Component {
       }
     }
     console.log(settings)
-    fetch("http://localhost:5000/sendMessage", settings)
+    fetch("http://5fa75f3a.ngrok.io/sendMessage", settings)
     .then(res => res.json())
     .then((result) => {
         console.log(result)
@@ -51,7 +51,7 @@ class Messages extends Component {
 
   getMessages(room) {
     console.log("Retrieving messages")
-    fetch("http://localhost:5000/getMessages")
+    fetch("http://5fa75f3a.ngrok.io/getMessages")
     .then(res => res.json())
     .then(result => {
       console.log(result.filter(it => (it.room === room)))
@@ -62,10 +62,11 @@ class Messages extends Component {
   }
 
   filterMessages(messages, room, user) {
+    console.log("messages", messages);
     const messagesByRoom = messages.filter(it => it.room === room);
 
     if(room !== "global") {
-      return messagesByRoom.filter(it => (it.user === user || it.user === "conductor"))
+      return messagesByRoom.filter(it => ( it.user === user || it.to === user))
     }
     return messagesByRoom;
   }
@@ -97,19 +98,19 @@ class Messages extends Component {
       <div>
         <button className="returnButton" onClick={() => {window.location.reload();}}> <img src={returnIcon} /> <br /> </button> 
         <div className="displayAllMessages">
-          <h3 className="roomTitle">{ room } room </h3>
+          <h3 className="roomTitle">{ room === "conductor" ? "Concierge" : room } room </h3>
           { messages.length < 1 %
             <div> Loading... </div>
           }
           { messages.map((it, index) => (
             <div key={index}>
-              <span className="displayName">    { it.user }</span>: 
+              <span className="displayName">    { it.user === "conductor" ? "Concierge" : it.user }</span>: 
               <span className="displayMessage"> { it.message }</span>
             </div>
           ))
           }
           <form className="formClass" name="object" onSubmit={this.sendMessage}>
-            <input class="inputText" type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
+            <input className="inputText" type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
             <button className="sendButton" type="submit"> <img src={arrowIcon} /> </button> 
           </form>
         </div>

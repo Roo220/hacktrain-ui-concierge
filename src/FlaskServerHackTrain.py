@@ -24,7 +24,8 @@ class Message(object):
             'room': self.room, 
             'dateTime': self.dateTime,
             'user': self.user,
-            'message': self.message
+            'message': self.message,
+            'to': self.to
         }
 
 
@@ -32,7 +33,7 @@ SPORTS_INPUTS = ("sport", "football", "sports", "scoccer")
 SPORTS_RESPONSES = ["Welbeck blow for Gunners", "Midfield duo must step up for Reds, says Molby", "Fatigued foxes united in spirit","Football: Lions skipper Hariss Harun leads by example with Man-of-the-Match display"]
 
 WEATHER_INPUTS = ("weather", "raining", "temperature", )
-WEATHER_RESPONSE="Todays weather is 13 C with occasional rain"
+WEATHER_RESPONSE="Todays weather is 13 C with occasional rain in London"
 
 DELAY_INPUTS = ("late", "delay", "waiting")
 DELAY_RESPONSE="We are currently experiencing signaling issues, trains will be running 15 minute delayed"
@@ -40,13 +41,16 @@ DELAY_RESPONSE="We are currently experiencing signaling issues, trains will be r
 ARRIVAL_INPUTS = ("arrival", "arrivals", "arrive")
 ARRIVAL_REPONSE = "This train is due to arrive at London St Pancras station at 10:05"
 
-MENU_INPUTS = ("food", "menu", "foodcart")
+MENU_INPUTS = ("food", "menu", "menu?","foodcart")
 MENU_RESPONSE = "The food cart is currently in carriage 6. We are carrying a selection of sandwiches, light snacks, fruit, and softdrinks."
 
-def greeting(sentence):
-    for word in sentence.split():
-        print(word)
+GREETINGS_INPUTS = ("hi", "hello")
+GREETINGS_RESPONSE = "Hello"
 
+def greeting(sentence, user):
+    seat = user.split('-')
+    seat = seat[-1]
+    print(seat)
     for word in sentence.split():
         if word.lower() in WEATHER_INPUTS:
            return WEATHER_RESPONSE
@@ -55,7 +59,9 @@ def greeting(sentence):
         elif word.lower() in ARRIVAL_INPUTS:
             return ARRIVAL_REPONSE
         elif word.lower() in MENU_INPUTS:
-           return MENU_RESPONSE
+           return "{} We will be heading to you at seat {} shortly.".format(MENU_RESPONSE, seat)
+        elif word.lower() in GREETINGS_INPUTS: 
+            return GREETINGS_RESPONSE
 
 messages = []
 
@@ -65,11 +71,11 @@ app = Flask(__name__)
 def sendMessage():
     data = request.data
     data = json.loads(data)
-    m = Message(data["room"], data["dateTime"], data["user"], data["message"], "")
+    m = Message(data["room"], data["dateTime"], data["user"], data["message"], " ")
     messages.append(m)
 
     if(data["room"] == "conductor"):
-        botResponse = greeting(m.message)
+        botResponse = greeting(m.message, m.user)
         print(botResponse)
         if (botResponse is not None):
             botMessage = Message("conductor", "", "conductor", botResponse, data["user"])

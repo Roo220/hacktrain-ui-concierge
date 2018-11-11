@@ -33,7 +33,7 @@ class App extends Component {
     console.log("setCookie()")
     event.preventDefault()
     console.log("Setting cookie and loading chat...")
-    const username = this.state.name + this.state.seatNumber
+    const username = this.state.name +"-"+ this.state.seatNumber
     document.cookie = "conciergeUsername=" + username
     this.setState({username: username})
   }
@@ -76,7 +76,7 @@ class App extends Component {
               <div className="menu">
                 <center><h2> Select a room.. </h2></center>
                 <button className="mainButton" onClick={() => {this.setRoom("global")}}> <img src={globalIcon} /> <br /> Global </button>
-                <button className="mainButton" onClick={() => {this.setRoom("conductor")}} > <img src={conductorIcon} /> <br /> Conductor </button>
+                <button className="mainButton" onClick={() => {this.setRoom("conductor")}} > <img src={conductorIcon} /> <br /> Concierge </button>
                 <br /> 
                 {/* <button className="mainButton" onClick={() => {this.setRoom("carriage")}}> <img src={carriageIcon} /> <br /> Carriage </button> */}
                 {/* <button className="mainButton" onClick={() => {this.setRoom("trolleyService")}}> <img src={cartIcon} /> <br /> TrolleyService </button> */}
