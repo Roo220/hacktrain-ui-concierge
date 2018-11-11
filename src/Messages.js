@@ -22,68 +22,44 @@ class Messages extends Component {
   sendMessage(event) {
     event.preventDefault(); 
 
-    const payload = {
-      datetime: Date.now(),
+    const payload = JSON.stringify({
+      dateTime: Date.now().toString(),
       room: this.props.room,
-      username: getCookie("conciergeUsername"),
+      user: getCookie("conciergeUsername"),
       message: this.state.messageBox 
+    })
+    console.log("Payload: ", payload)
+
+    const settings = {
+      method: "post",
+      body: payload,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
     }
-
-    this.setState({messageBox: ""});
-
-    console.log(payload); 
+    console.log(settings)
+    fetch("http://localhost:5000/sendMessage", settings)
+    .then(res => res.json())
+    .then((result) => {
+        console.log(result)
+        const messages = []
+        result.map(it => messages.push(it))
+        this.setState({messages: messages})
+        this.setState({messageBox: ""})
+      })
   }
 
   getMessages(room) {
-    return room === "global" ? 
-     [
-      {
-        "user" : "sebastian",
-        "room" : "global",
-        "dateTime": "",
-        "message" : "Welcome to the global train chat! "
-      },
-      {
-        "user" : "rich",
-        "room" : "global",
-        "dateTime": "",
-        "message" : "Hello there, " + getCookie("conciergeUsername") + "! " 
-      } 
-    ]
-    : room === "conductor" ? 
-    [
-     {
-        "user" : "Concierge",
-        "room" : "conductor",
-        "dateTime": "",
-        "message": "Hi there! I am this train's Concierge ready to ask for your instructions. "
-     },
-     {
-        "user" : "Concierge",
-        "room" : "conductor",
-        "dateTime": "",
-        "message": "You can ask me about if there is a delay, what the weather is like, the latest news and so on! "
-     }
-    ]
-    : room === "carriage" ? 
-    [
-      {
-        "user" : "Concierge",
-        "room" : "carriage",
-        "dateTime": "",
-        "message": "This is the carriage number X. You can speak to people from this carriage! Please mind your words, haha. "
-     }
-    ]
-    : 
-    // room === "trolleyCart"
-    [
-      {
-        "user" : "Concierge",
-        "room" : "trolleyService",
-        "dateTime": "",
-        "message": "This is the trolley service. What would you need from the trolley? "
-      }
-    ]
+    console.log("Retrieving messages")
+    fetch("http://localhost:5000/getMessages")
+    .then(res => res.json())
+    .then(result => {
+      console.log(result.filter(it => (it.room === room)))
+      return result.filter(it => (it.room === room))
+    });
+
+    return []
   }
 
   updateInput(event) {
@@ -104,7 +80,7 @@ class Messages extends Component {
       this.setState({
         messages: this.getMessages(this.props.room)
       })
-    }
+    }  
   }
 
   render(){
