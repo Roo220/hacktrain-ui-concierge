@@ -1,3 +1,9 @@
+.menu {
+   text-align: center;
+}
+
+
+
 .mainButton {
    -webkit-border-radius: 20px;
    -moz-border-radius: 20px;
@@ -25,20 +31,17 @@
 
 
 .sendButton {
-   -webkit-border-radius: 20px;
-   -moz-border-radius: 20px;
-   border-radius: 20px;
-   width: 1.8em;
-   line-height: 0em;
+   position: absolute;
    color: #FFFFFF;
    font-family: Verdana;
    font-weight: 100;
-   padding: 0em;
+   padding: 0.78em;
    background-color: #1E62D0;
    text-shadow: 1px 1px 20px #000000;
    text-decoration: none;
    display: inline-block;
    cursor: pointer;
+   border: none;
 }
 
 .sendButton:hover {
@@ -64,6 +67,7 @@
    padding-right: 30%;
    position: relative;
    overflow-wrap: break-word;
+   font-size: 1.7em;
 }
 
 .roomTitle {
@@ -88,4 +92,10 @@
    z-index: 1000;
    border: none;
    cursor: pointer;
+}
+
+
+
+.inputText {
+   font-size: 1.01em;
 }

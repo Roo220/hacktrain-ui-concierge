@@ -73,7 +73,7 @@ class App extends Component {
                 <Messages room={room} />
               </div>      
               : 
-              <div>
+              <div className="menu">
                 <center><h2> Select a room.. </h2></center>
                 <button className="mainButton" onClick={() => {this.setRoom("global")}}> <img src={globalIcon} /> <br /> Global </button>
                 <button className="mainButton" onClick={() => {this.setRoom("conductor")}} > <img src={conductorIcon} /> <br /> Conductor </button>

@@ -59,7 +59,14 @@ class Messages extends Component {
       return result.filter(it => (it.room === room))
     });
 
-    return []
+    return [
+      {
+        user: "seb",
+        datetime: "",
+        message: "yes good",
+        "room": "global"
+      }
+    ]
   }
 
   updateInput(event) {
@@ -98,7 +105,7 @@ class Messages extends Component {
           ))
           }
           <form className="formClass" name="object" onSubmit={this.sendMessage}>
-            <input type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
+            <input class="inputText" type="text" name="messageBox" value={this.state.messageBox} onChange={this.updateInput}/>
             <button className="sendButton" type="submit"> <img src={arrowIcon} /> </button> 
           </form>
         </div>
