@@ -7,6 +7,9 @@ RUN pip install flask
 WORKDIR /usr
 COPY ./src/FlaskServerHackTrain.py /usr
 
+RUN ls 
+
 EXPOSE 5000
 
-CMD FLASK_APP=./src/FlaskServerHackTrain && flask run
+RUN FLASK_APP=FlaskServerHackTrain
+CMD flask run
