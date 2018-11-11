@@ -22,9 +22,14 @@
    text-decoration: none;
 }
 
+
+
 .sendButton {
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
    width: 1.8em;
-   line-height: 1em;
+   line-height: 0em;
    color: #FFFFFF;
    font-family: Verdana;
    font-weight: 100;
@@ -39,4 +44,48 @@
 .sendButton:hover {
    background: #0C54D0;
    text-decoration: none;
+}
+
+
+
+.displayName {
+   font-weight: bold;
+   text-transform: capitalize;
+   color: #0C54D0; 
+}
+
+.displayMessage::first-letter {
+   text-transform: capitalize; 
+}
+
+.displayAllMessages {
+   text-align: left;
+   padding-left: 30%;
+   padding-right: 30%;
+   position: relative;
+   overflow-wrap: break-word;
+}
+
+.roomTitle {
+   text-transform: capitalize;
+   padding-left: 1em;
+   font-size: 1.7em;
+}
+
+.formClass {
+   padding-top: 0.5%;
+}
+
+
+
+.returnButton {
+   background-color: transparent; 
+   position: absolute; 
+   display:inline-block;
+   overflow: auto;
+   white-space: nowrap;
+   left: 27%;
+   z-index: 1000;
+   border: none;
+   cursor: pointer;
 }
