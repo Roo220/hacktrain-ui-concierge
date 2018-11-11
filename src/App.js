@@ -78,8 +78,8 @@ class App extends Component {
                 <button className="mainButton" onClick={() => {this.setRoom("global")}}> <img src={globalIcon} /> <br /> Global </button>
                 <button className="mainButton" onClick={() => {this.setRoom("conductor")}} > <img src={conductorIcon} /> <br /> Conductor </button>
                 <br /> 
-                <button className="mainButton" onClick={() => {this.setRoom("carriage")}}> <img src={carriageIcon} /> <br /> Carriage </button>
-                <button className="mainButton" onClick={() => {this.setRoom("trolleyService")}}> <img src={cartIcon} /> <br /> TrolleyService </button>
+                {/* <button className="mainButton" onClick={() => {this.setRoom("carriage")}}> <img src={carriageIcon} /> <br /> Carriage </button> */}
+                {/* <button className="mainButton" onClick={() => {this.setRoom("trolleyService")}}> <img src={cartIcon} /> <br /> TrolleyService </button> */}
               </div>
             }
             </div>

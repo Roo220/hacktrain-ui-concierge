@@ -40,6 +40,9 @@ DELAY_RESPONSE="We are currently experiencing signaling issues, trains will be r
 ARRIVAL_INPUTS = ("arrival", "arrivals", "arrive")
 ARRIVAL_REPONSE = "This train is due to arrive at London St Pancras station at 10:05"
 
+MENU_INPUTS = ("food", "menu", "foodcart")
+MENU_RESPONSE = "The food cart is currently in carriage 6. We are carrying a selection of sandwiches, light snacks, fruit, and softdrinks."
+
 def greeting(sentence):
     for word in sentence.split():
         print(word)
@@ -51,11 +54,10 @@ def greeting(sentence):
            return DELAY_RESPONSE
         elif word.lower() in ARRIVAL_INPUTS:
             return ARRIVAL_REPONSE
-        elif word.lower() in SPORTS_INPUTS:
-           return random.choice(SPORTS_RESPONSES)
-    
-messages = []
+        elif word.lower() in MENU_INPUTS:
+           return MENU_RESPONSE
 
+messages = []
 
 app = Flask(__name__)
 
