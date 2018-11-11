@@ -96,6 +96,37 @@
 
 
 
+
 .inputText {
    font-size: 1.01em;
+}
+
+@media only screen and (max-width: 1200px) {
+   body {
+      font-size: 1.2em;
+   }
+   .sendButton {
+      position: absolute;
+      color: #FFFFFF;
+      font-family: Verdana;
+      font-weight: 100;
+      padding: 0.97em;
+      background-color: #1E62D0;
+      text-shadow: 1px 1px 20px #000000;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      border: none;
+   }
+
+   .sendButton:hover {
+      background: #0C54D0;
+      text-decoration: none;
+   }
+}
+
+@media only screen and (max-width: 768px) {
+   body {
+      font-size: 0.75em;
+   }
 }
