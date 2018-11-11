@@ -1,9 +1,32 @@
 from flask import Flask
 from flask import request
+from flask import jsonify
 import pandas as pd
 import numpy as np
+import json
 
-app = Flask(__name__)
+
+class Message(object):
+    room = ""
+    dateTime = ""
+    user = ""
+    message = ""
+    to = ""
+
+    def __init__(self, room, dateTime, user, message, to):
+        self.room = room
+        self.dateTime = dateTime
+        self.user = user
+        self.message = message
+        self.to = to
+
+    def serialize(self):
+        return {
+            'room': self.room, 
+            'dateTime': self.dateTime,
+            'user': self.user,
+            'message': self.message
+        }
 
 
 def df_empty(columns, dtypes, index=None):
@@ -16,37 +39,64 @@ def df_empty(columns, dtypes, index=None):
 
 df = df_empty(['room', 'dateTime', 'username', 'message','to'], dtypes=[object, object, object, object,object])
 
+SPORTS_INPUTS = ("sport", "football", "sports", "scoccer")
+SPORTS_RESPONSES = ["Welbeck blow for Gunners", "Midfield duo must step up for Reds, says Molby", "Fatigued foxes united in spirit","Football: Lions skipper Hariss Harun leads by example with Man-of-the-Match display"]
+
+WEATHER_INPUTS = ("london", "weather", "raining")
+WEATHER_RESPONSES=("13 C with Occasional Rain")
+
+def greeting(sentence):
+
+   for word in sentence.split():
+       if word.lower() in SPORTS_INPUTS:
+           return random.choice(SPORTS_RESPONSES)
+       elif word.lower() in WEATHER_INPUTS:
+           return random.choice(WEATHER_RESPONSES)
+
+messages = []
 
 
-@app.route('/receivemessage', methods=['POST'])
-def receivemessage():
+app = Flask(__name__)
+
+@app.route('/sendMessage', methods=['POST'])
+def sendMessage():
     global df
-    data = request.get_json()
-    username = data["user"]
-    room = data["room"]
-    datereceived = data["dateTime"]
-    message = data["message"]
-    df2 = pd.DataFrame([[room,datereceived,username,message,'all']],columns=['room', 'dateTime', 'username', 'message','to'])
-    df = df.append(df2,ignore_index=True)
+    data = request.data
+    data = json.loads(data)
+    m = Message(data["room"], data["dateTime"], data["user"], data["message"], "")
+    print(m.message)
+    messages.append(m)
+    payload = m2=[message.serialize() for message in messages]
+    payload = json.dumps(payload)
+    print(payload)
 
-    return df.to_json()
+    response = app.response_class(
+        response=payload,
+        status=200,
+        mimetype='application/json'
+    )
 
-@app.route('/conductor', methods=['POST'])
-def conductor():
-    global df
-    data = request.get_json()
-    username = data["user"]
-    room = data["room"]
-    datereceived = data["dateTime"]
-    message = data["message"]
-    df2 = pd.DataFrame([['conductor',datereceived,username,message,'conductor']],columns=['room', 'dateTime', 'username', 'message','to'])
-    df3 = pd.DataFrame([['conductor', datereceived, 'conductor', 'I will help you', username]],
-                       columns=['room', 'dateTime', 'username', 'message', 'to'])
-    df = df.append(df2,ignore_index=True)
-    df = df.append(df3, ignore_index=True)
+    return response
 
-    df4 = df.loc[df['room'].isin(['conductor']) & df['username'].isin(['conductor',username]) & df['to'].isin(['conductor',username])]
-    return df4.to_json()
+@app.route('/getMessages', methods=['GET'])
+def getMessages():
+    payload = m2=[message.serialize() for message in messages]
+    payload = json.dumps(payload)
+    print(payload)
+
+    response = app.response_class(
+        response=payload,
+        status=200,
+        mimetype='application/json'
+    )
+
+    return response
+
+@app.after_request
+def add_headers(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    return response
 
 
 if __name__ == "__main__":

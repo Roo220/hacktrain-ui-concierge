@@ -18,36 +18,45 @@ class Messages extends Component {
   sendMessage(event) {
     event.preventDefault(); 
 
-    const payload = {
-      datetime: Date.now(),
+    const payload = JSON.stringify({
+      dateTime: Date.now().toString(),
       room: this.props.room,
-      username: getCookie("conciergeUsername"),
+      user: getCookie("conciergeUsername"),
       message: this.state.messageBox 
+    })
+    console.log("Payload: ", payload)
+
+    const settings = {
+      method: "post",
+      body: payload,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
     }
-
-    this.setState({messageBox: ""});
-
-    console.log(payload); 
+    console.log(settings)
+    fetch("http://localhost:5000/sendMessage", settings)
+    .then(res => res.json())
+    .then((result) => {
+        console.log(result)
+        const messages = []
+        result.map(it => messages.push(it))
+        this.setState({messages: messages})
+        this.setState({messageBox: ""})
+      })
   }
 
   getMessages(room) {
-    return room === "global" ? 
-     [
-      {
-        "user" : "sebastian",
-        "room" : "global",
-        "dateTime": "",
-        "message" : "Hello"
-      },
-      {
-        "user" : "rich",
-        "room" : "global",
-        "dateTime": "",
-        "message" : "Hello to you too"
-      } 
-    ]
-    : 
-    []
+
+    console.log("Retrieving messages")
+    fetch("http://localhost:5000/getMessages")
+    .then(res => res.json())
+    .then(result => {
+      console.log(result.filter(it => (it.room === room)))
+      return result.filter(it => (it.room === room))
+    });
+
+    return []
   }
 
   updateInput(event) {
@@ -68,7 +77,7 @@ class Messages extends Component {
       this.setState({
         messages: this.getMessages(this.props.room)
       })
-    }
+    }  
   }
 
   render(){
